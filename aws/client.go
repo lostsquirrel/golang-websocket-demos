@@ -3,13 +3,12 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"github.com/gorilla/websocket"
 	"log"
 	"net/url"
 	"os"
 	"os/signal"
 	"time"
-
-	"github.com/gorilla/websocket"
 )
 
 var addr = flag.String("addr", "5qj4604lzl.execute-api.us-west-1.amazonaws.com", "http service address")
@@ -57,6 +56,7 @@ func main() {
 		case <-done:
 			return
 		case t := <-ticker.C:
+
 			m := MyMessage{
 				Path: "test2",
 				Body: t.String(),
@@ -64,6 +64,7 @@ func main() {
 			bob, _ := json.Marshal(m)
 			log.Printf("send message: %s", string(bob))
 			err := c.WriteMessage(websocket.TextMessage, bob)
+
 			if err != nil {
 				log.Println("write:", err)
 				return
@@ -85,4 +86,5 @@ func main() {
 			return
 		}
 	}
+
 }
